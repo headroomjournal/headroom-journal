@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Search, Menu, X } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { cn, slugify } from "@/lib/utils";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 
@@ -63,7 +63,7 @@ export function Header() {
             {navItems.map((item) => (
               <Link
                 key={item}
-                href={`/category/${item.toLowerCase()}`}
+                href={`/category/${slugify(item)}`}
                 className="font-sans text-sm font-medium uppercase tracking-wider text-gray-600 transition-colors hover:text-black"
               >
                 {item}
@@ -130,7 +130,7 @@ export function Header() {
             {navItems.map((item) => (
               <Link
                 key={item}
-                href={`/category/${item.toLowerCase()}`}
+                href={`/category/${slugify(item)}`}
                 className="border-b border-gray-100 pb-4 font-sans text-2xl font-bold uppercase tracking-tight text-black"
                 onClick={() => setIsMenuOpen(false)}
               >

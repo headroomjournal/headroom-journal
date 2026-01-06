@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { slugify } from "@/lib/utils";
 
 export function Footer() {
   return (
@@ -27,7 +28,7 @@ export function Footer() {
               {["Art", "Pop Culture", "Music"].map((item) => (
                 <li key={item}>
                   <Link
-                    href={`/category/${item.toLowerCase()}`}
+                    href={`/category/${slugify(item)}`}
                     className="font-serif text-sm text-gray-600 hover:text-black hover:underline underline-offset-4"
                   >
                     {item}
