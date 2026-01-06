@@ -9,7 +9,7 @@ interface ArticleCardProps {
   excerpt?: string;
   imageUrl?: string;
   slug: string;
-  variant?: "hero" | "standard" | "compact" | "text-only";
+  variant?: "hero" | "standard" | "compact" | "mini" | "audio" | "text-only";
   className?: string;
 }
 
@@ -40,6 +40,109 @@ export function ArticleCard({
             </h3>
             {excerpt && (
               <p className="mt-3 font-serif text-sm leading-relaxed text-gray-600 line-clamp-3">
+                {excerpt}
+              </p>
+            )}
+          </div>
+        </div>
+      </Link>
+    );
+  }
+
+  if (variant === "compact") {
+    return (
+      <Link href={`/article/${slug}`} className={cn("group block", className)}>
+        <div className="flex gap-4">
+          {imageUrl && (
+            <div className="relative aspect-square w-20 flex-shrink-0 overflow-hidden bg-gray-100">
+              <Image
+                src={imageUrl}
+                alt={title}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="80px"
+              />
+            </div>
+          )}
+          <div className="flex flex-col justify-center">
+            <div className="mb-1 flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-gray-400">
+              <span className="text-blue-600">{category}</span>
+              <span>{date}</span>
+            </div>
+            <h3 className="font-sans text-sm font-bold leading-tight text-black transition-colors group-hover:text-gray-600 line-clamp-2">
+              {title}
+            </h3>
+          </div>
+        </div>
+      </Link>
+    );
+  }
+
+  if (variant === "audio") {
+    return (
+      <Link href={`/article/${slug}`} className={cn("group block", className)}>
+        <div className="flex flex-col gap-4">
+          {imageUrl && (
+            <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
+              <Image
+                src={imageUrl}
+                alt={title}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 768px) 50vw, 25vw"
+              />
+              <div className="absolute inset-0 flex items-center justify-center bg-black/5 opacity-0 transition-opacity group-hover:opacity-100">
+                <div className="h-12 w-12 rounded-full bg-white/90 p-3 shadow-xl">
+                  <svg viewBox="0 0 24 24" fill="black" className="ml-0.5">
+                    <path d="M8 5v14l11-7z" />
+                  </svg>
+                </div>
+              </div>
+            </div>
+          )}
+          <div className="flex flex-col">
+            <div className="mb-2 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-gray-400">
+              <span className="text-blue-600">Selected</span>
+              <span className="flex items-center gap-1">
+                <span className="h-1 w-1 rounded-full bg-gray-400" />
+                Audio
+              </span>
+            </div>
+            <h3 className="font-sans text-lg font-bold leading-tight text-black transition-colors group-hover:text-gray-600">
+              {title}
+            </h3>
+            {excerpt && (
+              <p className="mt-2 font-serif text-xs leading-relaxed text-gray-500 line-clamp-2">
+                {excerpt}
+              </p>
+            )}
+          </div>
+        </div>
+      </Link>
+    );
+  }
+
+  if (variant === "mini") {
+    return (
+      <Link href={`/article/${slug}`} className={cn("group block", className)}>
+        <div className="flex flex-col gap-3">
+          {imageUrl && (
+            <div className="relative aspect-square w-full overflow-hidden bg-gray-100">
+              <Image
+                src={imageUrl}
+                alt={title}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+                sizes="(max-width: 768px) 50vw, 20vw"
+              />
+            </div>
+          )}
+          <div className="flex flex-col">
+            <h3 className="font-sans text-sm font-bold leading-tight text-black transition-colors group-hover:text-gray-600 line-clamp-2">
+              {title}
+            </h3>
+            {excerpt && (
+              <p className="mt-1 font-serif text-[11px] leading-snug text-gray-500 line-clamp-2">
                 {excerpt}
               </p>
             )}

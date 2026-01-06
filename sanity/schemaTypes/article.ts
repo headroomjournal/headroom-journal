@@ -74,7 +74,36 @@ export default defineType({
       name: "content",
       title: "Content",
       type: "array",
-      of: [{ type: "block" }],
+      of: [
+        { type: "block" },
+        {
+          type: "image",
+          options: {
+            hotspot: true,
+          },
+          fields: [
+            {
+              name: "alt",
+              type: "string",
+              title: "Alternative Text",
+              description: "Important for SEO and accessibility.",
+            },
+            {
+              name: "caption",
+              type: "string",
+              title: "Caption",
+            },
+          ],
+        },
+      ],
+    }),
+    defineField({
+      name: "views",
+      title: "View Count",
+      type: "number",
+      initialValue: 0,
+      description:
+        "Estimated or actual view count for sorting 'Most Read' section.",
     }),
   ],
 });
