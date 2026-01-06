@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import { Header } from "@/components/Header";
@@ -8,6 +9,36 @@ import { SpotifyEmbed } from "@/components/SpotifyEmbed";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import { portableTextComponents } from "@/components/PortableTextComponents";
+
+export async function generateMetadata({
+  params,
+}: ArticlePageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await getArticle(slug);
+
+  if (!article) return { title: "Article Not Found" };
+
+  const articleImageUrl = article.imageUrl
+    ? urlFor(article.imageUrl).width(1200).height(630).url()
+    : null;
+
+  return {
+    title: `${article.title} | Headroom Journal`,
+    description: article.excerpt,
+    openGraph: {
+      title: article.title,
+      description: article.excerpt,
+      images: articleImageUrl ? [articleImageUrl] : [],
+      type: "article",
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: article.title,
+      description: article.excerpt,
+      images: articleImageUrl ? [articleImageUrl] : [],
+    },
+  };
+}
 
 interface ArticlePageProps {
   params: Promise<{
@@ -77,7 +108,7 @@ async function getRelatedArticles(
   }
 }
 
-export const revalidate = 60;
+export const revalidate = 28800; // Revalidate every 8 hours
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
