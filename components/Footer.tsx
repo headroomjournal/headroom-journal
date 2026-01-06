@@ -13,9 +13,9 @@ export function Footer() {
               headroom journal
             </Link>
             <p className="max-w-sm font-serif text-sm leading-relaxed text-gray-500">
-              A curated digital space exploring the intersection of design,
-              culture, and technology. Dedicated to thoughtful commentary and
-              visual storytelling.
+              Headroom Journal adalah media independen yang mendokumentasikan
+              musik, ruang, dan manusia. Kami menulis tentang bunyi yang terjadi
+              di luar sorotan utama sebagai catatan, arsip, dan refleksi.
             </p>
           </div>
 
@@ -24,10 +24,10 @@ export function Footer() {
               Platform
             </h4>
             <ul className="space-y-4">
-              {["Ideas", "Culture", "Design", "Music", "Shop"].map((item) => (
+              {["Art", "Pop Culture", "Music"].map((item) => (
                 <li key={item}>
                   <Link
-                    href="#"
+                    href={`/category/${item.toLowerCase()}`}
                     className="font-serif text-sm text-gray-600 hover:text-black hover:underline underline-offset-4"
                   >
                     {item}
@@ -42,16 +42,24 @@ export function Footer() {
               Connect
             </h4>
             <ul className="space-y-4">
-              {["Instagram", "Contact"].map((item) => (
-                <li key={item}>
-                  <Link
-                    href="#"
-                    className="font-serif text-sm text-gray-600 hover:text-black hover:underline underline-offset-4"
-                  >
-                    {item}
-                  </Link>
-                </li>
-              ))}
+              <li>
+                <Link
+                  href="https://instagram.com/headroomjournal"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-serif text-sm text-gray-600 hover:text-black hover:underline underline-offset-4"
+                >
+                  Instagram
+                </Link>
+              </li>
+              <li>
+                <a
+                  href="mailto:headroomjournal@gmail.com"
+                  className="font-serif text-sm text-gray-600 hover:text-black hover:underline underline-offset-4"
+                >
+                  Contact
+                </a>
+              </li>
             </ul>
           </div>
         </div>
