@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Headroom Journal
 
-## Getting Started
+Headroom Journal adalah media independen yang mendokumentasikan musik, ruang, dan manusia. Kami menulis tentang bunyi yang terjadi di luar sorotan utama sebagai catatan, arsip, dan refleksi.
 
-First, run the development server:
+## Fitur Utama
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Integrasi Sanity CMS**: Manajemen konten artikel secara dinamis melalui dashboard yang intuitif.
+- **Eksplorasi Kategori**: Navigasi dan filter artikel berdasarkan kategori utama: **Art**, **Pop Culture**, dan **Music**.
+- **Fitur Pencarian**: Pencarian artikel global berdasarkan judul, kutipan, maupun konten.
+- **Storytelling Visual**: Dukungan gambar berkualitas tinggi dengan atribusi sumber/kredit gambar.
+- **Multimedia**: Integrasi Spotify Embed untuk pengalaman audio-visual dalam artikel.
+- **Desain Responsif**: Antarmuka modern yang dioptimalkan untuk perangkat mobile dan desktop.
+- **Halaman Legal**: Dilengkapi dengan halaman Privacy Policy dan Terms of Use yang terintegrasi.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Teknologi
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **Frontend**: Next.js 15 (App Router), React, Tailwind CSS.
+- **Backend/CMS**: Sanity.io.
+- **UI Components**: Lucide React Icons, @portabletext/react.
+- **Typography**: @tailwindcss/typography.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Pengembangan
 
-## Learn More
+### Prasyarat
 
-To learn more about Next.js, take a look at the following resources:
+- Node.js & npm
+- Akun Sanity.io
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Instalasi
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1. Clone repositori:
 
-## Deploy on Vercel
+   ```bash
+   git clone https://github.com/indraprhmbd/headroom-journal.git
+   ```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+2. Instal dependensi:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+   ```bash
+   npm install
+   ```
+
+3. Konfigurasi Environment Variables:
+   Buat file `.env.local` dan tambahkan kredensial Sanity Anda:
+
+   ```env
+   NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+   NEXT_PUBLIC_SANITY_DATASET=production
+   ```
+
+4. Jalankan server pengembangan:
+   ```bash
+   npm run dev
+   ```
+
+### Sanity Studio
+
+Akses dashboard manajemen konten di `/studio` pada server lokal Anda (misal: `http://localhost:3000/studio`).
+
+---
+
+Built with pride for **Headroom Journal**.
