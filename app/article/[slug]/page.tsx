@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
+import { ArticleCard } from "@/components/ArticleCard";
 import { SpotifyEmbed } from "@/components/SpotifyEmbed";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
@@ -21,9 +22,18 @@ interface SanityArticleDetail {
   date: string;
   excerpt: string;
   imageUrl?: any;
-  imageSource?: string; // New field
+  imageSource?: string;
   spotifyUrl?: string;
-  content?: any; // Blocks for PortableText
+  content?: any;
+}
+
+interface SanityRelatedArticle {
+  title: string;
+  category: string;
+  date: string;
+  excerpt: string;
+  imageUrl?: any;
+  slug: string;
 }
 
 async function getArticle(slug: string): Promise<SanityArticleDetail | null> {
@@ -46,6 +56,27 @@ async function getArticle(slug: string): Promise<SanityArticleDetail | null> {
   }
 }
 
+async function getRelatedArticles(
+  category: string,
+  currentSlug: string
+): Promise<SanityRelatedArticle[]> {
+  const query = `*[_type == "article" && category == $category && slug.current != $currentSlug] | order(date desc) [0...1] {
+    title,
+    category,
+    date,
+    excerpt,
+    imageUrl,
+    "slug": slug.current
+  }`;
+
+  try {
+    return await client.fetch(query, { category, currentSlug });
+  } catch (error) {
+    console.error("Error fetching related articles:", error);
+    return [];
+  }
+}
+
 export const revalidate = 60;
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
@@ -55,6 +86,8 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
   if (!article) {
     notFound();
   }
+
+  const relatedArticles = await getRelatedArticles(article.category, slug);
 
   const articleImageUrl = article.imageUrl
     ? urlFor(article.imageUrl).url()
@@ -120,6 +153,29 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             </p>
           )}
         </div>
+
+        {/* Related Articles ("Baca Juga") */}
+        {relatedArticles.length > 0 && (
+          <div className="mt-20 border-t border-gray-100 pt-16">
+            <h2 className="mb-10 font-sans text-xs font-bold uppercase tracking-widest text-gray-400">
+              Read Also
+            </h2>
+            <div className="grid gap-8 md:grid-cols-2">
+              {relatedArticles.map((rel) => (
+                <ArticleCard
+                  key={rel.slug}
+                  title={rel.title}
+                  category={rel.category}
+                  date={rel.date}
+                  excerpt={rel.excerpt}
+                  slug={rel.slug}
+                  imageUrl={rel.imageUrl ? urlFor(rel.imageUrl).url() : ""}
+                  variant="standard"
+                />
+              ))}
+            </div>
+          </div>
+        )}
       </article>
 
       <Footer />
