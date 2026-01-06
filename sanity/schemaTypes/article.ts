@@ -27,15 +27,9 @@ export default defineType({
       type: "string",
       options: {
         list: [
-          { title: "Culture", value: "Culture" },
-          { title: "Design", value: "Design" },
+          { title: "Art", value: "Art" },
+          { title: "Pop Culture", value: "Pop Culture" },
           { title: "Music", value: "Music" },
-          { title: "Technology", value: "Technology" },
-          { title: "Environment", value: "Environment" },
-          { title: "Lifestyle", value: "Lifestyle" },
-          { title: "Classic", value: "Classic" },
-          { title: "Film", value: "Film" },
-          { title: "Literature", value: "Literature" },
         ],
       },
       validation: (rule) => rule.required(),

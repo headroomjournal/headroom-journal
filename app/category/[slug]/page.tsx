@@ -32,10 +32,19 @@ async function getArticlesByCategory(
   // For now, let's try to match the category field directly assuming the slug 'culture' maps to 'Culture'.
   // We'll capitalize the slug first.
 
-  const capitalizedCategory =
+  // Map slugs to CMS category values
+  const categoryMap: Record<string, string> = {
+    art: "Art",
+    "pop-culture": "Pop Culture",
+    music: "Music",
+  };
+
+  const cmsCategory =
+    categoryMap[category.toLowerCase()] ||
+    // Fallback: capitalized slug (e.g. "culture" -> "Culture")
     category.charAt(0).toUpperCase() + category.slice(1);
 
-  const query = `*[_type == "article" && category == $capitalizedCategory] | order(date desc) {
+  const query = `*[_type == "article" && category == $cmsCategory] | order(date desc) {
     title,
     category,
     date,
@@ -45,7 +54,7 @@ async function getArticlesByCategory(
   }`;
 
   try {
-    return await client.fetch(query, { capitalizedCategory });
+    return await client.fetch(query, { cmsCategory });
   } catch (error) {
     console.error("Error fetching articles by category:", error);
     return [];
@@ -61,7 +70,10 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
   // we might want to accept any slug and just show empty if no articles.
 
   const articles = await getArticlesByCategory(slug);
-  const categoryName = slug; // Keep URL slug for display or capitalize it
+  const categoryName =
+    slug === "pop-culture"
+      ? "Pop Culture"
+      : slug.charAt(0).toUpperCase() + slug.slice(1);
 
   // If we really want to return 404 for completely unknown categories we'd need a separate "Category" document type in Sanity.
   // For now, consistent with previous behavior (mostly), we show empty state or 404 if we want to be strict.
