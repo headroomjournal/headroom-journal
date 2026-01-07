@@ -93,7 +93,12 @@ export default async function Home() {
                 sideArticles.length > 0 ? "lg:col-span-8" : "lg:col-span-12"
               )}
             >
-              <ArticleCard {...heroArticle} variant="hero" className="h-full" />
+              <ArticleCard
+                {...heroArticle}
+                variant="hero"
+                className="h-full"
+                priority={true}
+              />
             </div>
 
             {sideArticles.length > 0 && (

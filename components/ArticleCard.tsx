@@ -11,6 +11,7 @@ interface ArticleCardProps {
   slug: string;
   variant?: "hero" | "standard" | "compact" | "mini" | "audio" | "text-only";
   className?: string;
+  priority?: boolean;
 }
 
 export function ArticleCard({
@@ -22,6 +23,7 @@ export function ArticleCard({
   slug,
   variant = "standard",
   className,
+  priority = false,
 }: ArticleCardProps) {
   if (variant === "text-only") {
     return (
@@ -168,6 +170,7 @@ export function ArticleCard({
                 src={imageUrl}
                 alt={title}
                 fill
+                priority={priority}
                 className="object-cover"
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
