@@ -8,6 +8,7 @@ import { ArticleCard } from "@/components/ArticleCard";
 import { SpotifyEmbed } from "@/components/SpotifyEmbed";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
+import { ARTICLE_QUERY, RELATED_ARTICLES_QUERY } from "@/sanity/lib/queries";
 import { portableTextComponents } from "@/components/PortableTextComponents";
 
 export async function generateMetadata({
@@ -68,19 +69,8 @@ interface SanityRelatedArticle {
 }
 
 async function getArticle(slug: string): Promise<SanityArticleDetail | null> {
-  const query = `*[_type == "article" && slug.current == $slug][0] {
-    title,
-    category,
-    date,
-    excerpt,
-    imageUrl,
-    "imageSource": imageUrl.source,
-    spotifyUrl,
-    content
-  }`;
-
   try {
-    return await client.fetch(query, { slug });
+    return await client.fetch(ARTICLE_QUERY, { slug });
   } catch (error) {
     console.error("Error fetching article:", error);
     return null;
@@ -91,24 +81,18 @@ async function getRelatedArticles(
   category: string,
   currentSlug: string
 ): Promise<SanityRelatedArticle[]> {
-  const query = `*[_type == "article" && category == $category && slug.current != $currentSlug] | order(date desc) [0...1] {
-    title,
-    category,
-    date,
-    excerpt,
-    imageUrl,
-    "slug": slug.current
-  }`;
-
   try {
-    return await client.fetch(query, { category, currentSlug });
+    return await client.fetch(RELATED_ARTICLES_QUERY, {
+      category,
+      currentSlug,
+    });
   } catch (error) {
     console.error("Error fetching related articles:", error);
     return [];
   }
 }
 
-export const revalidate = 3600; // Revalidate every 1 hour
+export const revalidate = 21600; // Revalidate every 6 hours
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;

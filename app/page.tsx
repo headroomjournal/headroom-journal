@@ -3,6 +3,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
+import { ARTICLES_QUERY } from "@/sanity/lib/queries";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
@@ -15,27 +16,13 @@ interface SanityArticle {
   imageUrl?: any;
   slug: string;
   spotifyUrl?: string;
-  content?: any;
   views?: number;
   isPinned?: boolean;
 }
 
 async function getArticles(): Promise<SanityArticle[]> {
-  const query = `*[_type == "article"] | order(date desc) {
-    title,
-    category,
-    date,
-    excerpt,
-    imageUrl,
-    "slug": slug.current,
-    spotifyUrl,
-    content,
-    views,
-    isPinned
-  }`;
-
   try {
-    const articles = await client.fetch<SanityArticle[]>(query);
+    const articles = await client.fetch<SanityArticle[]>(ARTICLES_QUERY);
     return articles;
   } catch (error) {
     console.error("Error fetching articles:", error);
@@ -43,7 +30,7 @@ async function getArticles(): Promise<SanityArticle[]> {
   }
 }
 
-export const revalidate = 86400; // Revalidate every 24 hours
+export const revalidate = 3600; // Revalidate every 1 hour
 
 export default async function Home() {
   const allArticles = await getArticles();
