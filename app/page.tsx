@@ -4,6 +4,7 @@ import { Footer } from "@/components/Footer";
 import { client } from "@/sanity/lib/client";
 import { urlFor } from "@/sanity/lib/image";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 // Re-defining the Article interface for the component's internal use based on Sanity response
 interface SanityArticle {
@@ -16,6 +17,7 @@ interface SanityArticle {
   spotifyUrl?: string;
   content?: any;
   views?: number;
+  isPinned?: boolean;
 }
 
 async function getArticles(): Promise<SanityArticle[]> {
@@ -28,7 +30,8 @@ async function getArticles(): Promise<SanityArticle[]> {
     "slug": slug.current,
     spotifyUrl,
     content,
-    views
+    views,
+    isPinned
   }`;
 
   try {
@@ -59,13 +62,26 @@ export default async function Home() {
   // Transform to match component props
   const allArticlesFormatted = allArticles.map(withImageUrl);
 
-  // Distribution logic
-  const spotlightArticles = allArticlesFormatted.slice(0, 4);
-  const heroArticle = spotlightArticles[0];
-  const sideArticles = spotlightArticles.slice(1);
+  // Pin Feature Logic
+  const pinnedArticle = allArticlesFormatted.find((a) => a.isPinned);
 
-  const gridArticles = allArticlesFormatted.slice(4, 7);
-  const archiveArticles = allArticlesFormatted.slice(7);
+  let heroArticle: any;
+  let remainingArticles: any[];
+
+  if (pinnedArticle) {
+    heroArticle = pinnedArticle;
+    remainingArticles = allArticlesFormatted.filter(
+      (a) => a.slug !== pinnedArticle.slug
+    );
+  } else {
+    heroArticle = allArticlesFormatted[0];
+    remainingArticles = allArticlesFormatted.slice(1);
+  }
+
+  // Distribution logic after Hero is decided
+  const sideArticles = remainingArticles.slice(0, 3);
+  const gridArticles = remainingArticles.slice(3, 6);
+  const archiveArticles = remainingArticles.slice(6);
 
   // "Most Read" logic - sort by views
   const mostReadArticles = [...allArticlesFormatted]
@@ -85,24 +101,30 @@ export default async function Home() {
         {/* Spotlight Section */}
         {heroArticle && (
           <section className="mb-20 grid gap-8 lg:grid-cols-12">
-            <div className="lg:col-span-8">
+            <div
+              className={cn(
+                sideArticles.length > 0 ? "lg:col-span-8" : "lg:col-span-12"
+              )}
+            >
               <ArticleCard {...heroArticle} variant="hero" className="h-full" />
             </div>
 
-            <div className="flex flex-col gap-5 border-l border-gray-100 pl-0 lg:col-span-4 lg:pl-8">
-              <div className="mb-2 border-b border-gray-100 pb-2">
-                <h2 className="font-sans text-xs font-bold uppercase tracking-widest text-gray-400">
-                  Latest Updates
-                </h2>
+            {sideArticles.length > 0 && (
+              <div className="flex flex-col gap-5 border-l border-gray-100 pl-0 lg:col-span-4 lg:pl-8">
+                <div className="mb-2 border-b border-gray-100 pb-2">
+                  <h2 className="font-sans text-xs font-bold uppercase tracking-widest text-gray-400">
+                    Latest Updates
+                  </h2>
+                </div>
+                {sideArticles.map((article) => (
+                  <ArticleCard
+                    key={article.slug}
+                    {...article}
+                    variant="compact"
+                  />
+                ))}
               </div>
-              {sideArticles.map((article) => (
-                <ArticleCard
-                  key={article.slug}
-                  {...article}
-                  variant="compact"
-                />
-              ))}
-            </div>
+            )}
           </section>
         )}
 
@@ -130,52 +152,63 @@ export default async function Home() {
         {/* Most Read & Archive Mid-Section */}
         <div className="grid gap-16 lg:grid-cols-12">
           {/* Most Read Items */}
-          <section className="lg:col-span-4">
-            <div className="mb-8 border-b border-black pb-4">
-              <h2 className="font-sans text-2xl font-bold tracking-tight text-black">
-                Most Read
-              </h2>
-            </div>
-            <div className="flex flex-col divide-y divide-gray-100">
-              {mostReadArticles.map((article, index) => (
-                <Link
-                  key={article.slug}
-                  href={`/article/${article.slug}`}
-                  className="group flex gap-4 py-4 first:pt-0"
-                >
-                  <span className="font-sans text-2xl font-black text-gray-200 transition-colors group-hover:text-blue-600">
-                    {(index + 1).toString().padStart(2, "0")}
-                  </span>
-                  <div className="flex flex-col">
-                    <span className="mb-1 text-[10px] font-bold uppercase tracking-widest text-blue-600">
-                      {article.category}
+          {mostReadArticles.length >= 3 && (
+            <section className="lg:col-span-4">
+              <div className="mb-8 border-b border-black pb-4">
+                <h2 className="font-sans text-2xl font-bold tracking-tight text-black">
+                  Most Read
+                </h2>
+              </div>
+              <div className="flex flex-col divide-y divide-gray-100">
+                {mostReadArticles.map((article, index) => (
+                  <Link
+                    key={article.slug}
+                    href={`/article/${article.slug}`}
+                    className="group flex gap-4 py-4 first:pt-0"
+                  >
+                    <span className="font-sans text-2xl font-black text-gray-200 transition-colors group-hover:text-blue-600">
+                      {(index + 1).toString().padStart(2, "0")}
                     </span>
-                    <h3 className="font-sans text-sm font-bold leading-tight text-black group-hover:underline">
-                      {article.title}
-                    </h3>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </section>
+                    <div className="flex flex-col">
+                      <span className="mb-1 text-[10px] font-bold uppercase tracking-widest text-blue-600">
+                        {article.category}
+                      </span>
+                      <h3 className="font-sans text-sm font-bold leading-tight text-black group-hover:underline">
+                        {article.title}
+                      </h3>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </section>
+          )}
 
           {/* From the Archives */}
-          <section className="lg:col-span-8">
-            <div className="mb-8 border-b border-black pb-4 flex items-center justify-between">
-              <h2 className="font-sans text-2xl font-bold tracking-tight text-black">
-                From the Archives
-              </h2>
-            </div>
-            <div className="grid grid-cols-2 gap-6 md:grid-cols-3 text-sm">
-              {archiveArticles.length > 0 ? (
-                archiveArticles.map((article) => (
-                  <ArticleCard key={article.slug} {...article} variant="mini" />
-                ))
-              ) : (
-                <p className="text-gray-400 italic text-sm"></p>
+          {archiveArticles.length > 0 && (
+            <section
+              className={cn(
+                mostReadArticles.length >= 3
+                  ? "lg:col-span-8"
+                  : "lg:col-span-12"
               )}
-            </div>
-          </section>
+            >
+              <div className="mb-8 border-b border-black pb-4 flex items-center justify-between">
+                <h2 className="font-sans text-2xl font-bold tracking-tight text-black">
+                  From the Archives
+                </h2>
+              </div>
+              <div
+                className={cn(
+                  "grid grid-cols-2 gap-6 md:grid-cols-3 text-sm",
+                  mostReadArticles.length < 3 && "md:grid-cols-4 lg:grid-cols-6"
+                )}
+              >
+                {archiveArticles.map((article) => (
+                  <ArticleCard key={article.slug} {...article} variant="mini" />
+                ))}
+              </div>
+            </section>
+          )}
         </div>
 
         {/* Listen Section (Audio/Playlists) */}

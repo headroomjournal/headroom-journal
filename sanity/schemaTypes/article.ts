@@ -105,5 +105,13 @@ export default defineType({
       description:
         "Estimated or actual view count for sorting 'Most Read' section.",
     }),
+    defineField({
+      name: "isPinned",
+      title: "Pin to Hero",
+      type: "boolean",
+      initialValue: false,
+      description:
+        "If checked, this article will be featured as the main Hero on the homepage.",
+    }),
   ],
 });
