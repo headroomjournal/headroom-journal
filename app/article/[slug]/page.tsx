@@ -108,7 +108,7 @@ async function getRelatedArticles(
   }
 }
 
-export const revalidate = 28800; // Revalidate every 8 hours
+export const revalidate = 3600; // Revalidate every 1 hour
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
