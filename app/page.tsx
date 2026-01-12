@@ -12,6 +12,7 @@ interface SanityArticle {
   title: string;
   category: string;
   date: string;
+  readingTime?: number;
   excerpt: string;
   imageUrl?: any;
   slug: string;
@@ -53,22 +54,16 @@ export default async function Home() {
   const pinnedArticle = allArticlesFormatted.find((a) => a.isPinned);
 
   let heroArticle: any;
-  let remainingArticles: any[];
-
   if (pinnedArticle) {
     heroArticle = pinnedArticle;
-    remainingArticles = allArticlesFormatted.filter(
-      (a) => a.slug !== pinnedArticle.slug
-    );
   } else {
     heroArticle = allArticlesFormatted[0];
-    remainingArticles = allArticlesFormatted.slice(1);
   }
 
-  // Distribution logic after Hero is decided
-  const sideArticles = remainingArticles.slice(0, 3);
-  const gridArticles = remainingArticles.slice(3, 6);
-  const archiveArticles = remainingArticles.slice(6);
+  // Distribution logic decoupled from Hero
+  const sideArticles = allArticlesFormatted.slice(0, 3);
+  const gridArticles = allArticlesFormatted.slice(3, 6);
+  const archiveArticles = allArticlesFormatted.slice(6);
 
   // "Most Read" logic - sort by views
   const mostReadArticles = [...allArticlesFormatted]

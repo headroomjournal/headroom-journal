@@ -56,6 +56,7 @@ interface SanityArticleDetail {
   imageUrl?: any;
   imageSource?: string;
   spotifyUrl?: string;
+  readingTime?: number;
   content?: any;
 }
 
@@ -119,6 +120,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <span className="text-blue-600">{article.category}</span>
             <span>—</span>
             <span>{article.date}</span>
+            {article.readingTime && (
+              <>
+                <span>—</span>
+                <span>{article.readingTime} min read</span>
+              </>
+            )}
           </div>
           <h1 className="mb-6 font-sans text-4xl font-bold leading-tight tracking-tight text-black md:text-6xl">
             {article.title}

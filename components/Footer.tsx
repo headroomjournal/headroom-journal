@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { slugify } from "@/lib/utils";
 
 export function Footer() {
@@ -7,11 +8,14 @@ export function Footer() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid gap-12 md:grid-cols-4">
           <div className="md:col-span-2">
-            <Link
-              href="/"
-              className="mb-6 block font-sans text-2xl font-bold tracking-tighter text-black"
-            >
-              headroom journal
+            <Link href="/" className="mb-6 block w-32 md:w-40">
+              <Image
+                src="/logo.png"
+                alt="Headroom Journal"
+                width={160}
+                height={40}
+                className="h-auto w-full object-contain"
+              />
             </Link>
             <p className="max-w-sm font-serif text-sm leading-relaxed text-gray-500">
               Headroom Journal adalah media independen yang mendokumentasikan

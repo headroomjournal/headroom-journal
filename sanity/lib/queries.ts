@@ -5,6 +5,7 @@ export const ARTICLES_QUERY = groq`*[_type == "article"] | order(date desc)[0...
   title,
   category,
   date,
+  readingTime,
   excerpt,
   imageUrl,
   "slug": slug.current,
@@ -18,6 +19,7 @@ export const ARTICLE_QUERY = groq`*[_type == "article" && slug.current == $slug]
   title,
   category,
   date,
+  readingTime,
   excerpt,
   imageUrl,
   "imageSource": imageUrl.source,
@@ -30,6 +32,7 @@ export const RELATED_ARTICLES_QUERY = groq`*[_type == "article" && category == $
   title,
   category,
   date,
+  readingTime,
   excerpt,
   imageUrl,
   "slug": slug.current

@@ -6,7 +6,22 @@ import Image from "next/image";
 export const portableTextComponents: PortableTextComponents = {
   block: {
     normal: ({ children }) => (
-      <p className="mb-6 font-serif text-xl leading-relaxed text-gray-800">
+      <p className="mb-6 font-serif text-base leading-relaxed text-gray-800 md:text-xl">
+        {children}
+      </p>
+    ),
+    center: ({ children }) => (
+      <p className="mb-6 font-serif text-base leading-relaxed text-gray-800 md:text-xl text-center">
+        {children}
+      </p>
+    ),
+    right: ({ children }) => (
+      <p className="mb-6 font-serif text-base leading-relaxed text-gray-800 md:text-xl text-right">
+        {children}
+      </p>
+    ),
+    justify: ({ children }) => (
+      <p className="mb-6 font-serif text-base leading-relaxed text-gray-800 md:text-xl text-justify">
         {children}
       </p>
     ),
@@ -28,12 +43,12 @@ export const portableTextComponents: PortableTextComponents = {
   },
   list: {
     bullet: ({ children }) => (
-      <ul className="mb-8 ml-6 list-disc space-y-2 font-serif text-lg text-gray-800">
+      <ul className="mb-8 ml-6 list-disc space-y-2 font-serif text-base text-gray-800 md:text-lg">
         {children}
       </ul>
     ),
     number: ({ children }) => (
-      <ol className="mb-8 ml-6 list-decimal space-y-2 font-serif text-lg text-gray-800">
+      <ol className="mb-8 ml-6 list-decimal space-y-2 font-serif text-base text-gray-800 md:text-lg">
         {children}
       </ol>
     ),

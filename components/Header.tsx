@@ -5,6 +5,7 @@ import { Search, Menu, X } from "lucide-react";
 import { cn, slugify } from "@/lib/utils";
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -52,10 +53,17 @@ export function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="font-sans text-2xl font-bold tracking-tighter text-black md:text-3xl"
+            className="block w-32 md:w-40"
             onClick={() => setIsMenuOpen(false)}
           >
-            headroom journal
+            <Image
+              src="/logo.png"
+              alt="Headroom Journal"
+              width={208}
+              height={50}
+              className="h-auto w-full object-contain"
+              priority
+            />
           </Link>
 
           {/* Desktop Navigation */}

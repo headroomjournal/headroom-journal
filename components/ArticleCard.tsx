@@ -12,6 +12,7 @@ interface ArticleCardProps {
   variant?: "hero" | "standard" | "compact" | "mini" | "audio" | "text-only";
   className?: string;
   priority?: boolean;
+  readingTime?: number;
 }
 
 export function ArticleCard({
@@ -24,6 +25,7 @@ export function ArticleCard({
   variant = "standard",
   className,
   priority = false,
+  readingTime,
 }: ArticleCardProps) {
   if (variant === "text-only") {
     return (
@@ -35,7 +37,10 @@ export function ArticleCard({
           <div>
             <div className="mb-3 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-gray-500">
               <span className="text-blue-600">{category}</span>
-              <span>{date}</span>
+              <span>
+                {date}
+                {readingTime ? ` — ${readingTime} MIN READ` : ""}
+              </span>
             </div>
             <h3 className="font-heading text-2xl font-bold leading-tight text-black group-hover:text-gray-600 font-sans">
               {title}
@@ -192,7 +197,10 @@ export function ArticleCard({
         <div className="flex flex-col">
           <div className="mb-2 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-gray-500">
             <span className="text-blue-600">{category}</span>
-            <span>{date}</span>
+            <span>
+              {date}
+              {readingTime ? ` — ${readingTime} MIN READ` : ""}
+            </span>
           </div>
           <h3
             className={cn(

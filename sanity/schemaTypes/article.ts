@@ -44,6 +44,14 @@ export default defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: "readingTime",
+      title: "Reading Time (minutes)",
+      type: "number",
+      validation: (rule) => rule.min(1),
+      description:
+        "Estimated reading time in minutes (e.g. 2 for '2 min read').",
+    }),
+    defineField({
       name: "excerpt",
       title: "Excerpt",
       type: "text",
@@ -57,6 +65,8 @@ export default defineType({
       options: {
         hotspot: true,
       },
+      description:
+        "Recommended: Upload 16:9 images or use the hotspot tool to crop for the Hero section (16:9 aspect ratio).",
       fields: [
         defineField({
           name: "source",
@@ -75,7 +85,18 @@ export default defineType({
       title: "Content",
       type: "array",
       of: [
-        { type: "block" },
+        {
+          type: "block",
+          styles: [
+            { title: "Normal", value: "normal" },
+            { title: "Heading 2", value: "h2" },
+            { title: "Heading 3", value: "h3" },
+            { title: "Quote", value: "blockquote" },
+            { title: "Center", value: "center" },
+            { title: "Right", value: "right" },
+            { title: "Justify", value: "justify" },
+          ],
+        },
         {
           type: "image",
           options: {
