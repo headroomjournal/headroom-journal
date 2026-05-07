@@ -16,7 +16,11 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ message: "Invalid secret" }, { status: 401 });
     }
 
-    // 2. Identify the document type and slug
+    // 2. Propagation Delay: Give Sanity CDN time to update (2 seconds)
+    // This prevents Next.js from fetching old data during revalidation.
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+
+    // 3. Identify the document type and slug
     const { _type: type, slug } = body;
 
     console.log(`[Revalidate] Triggered for type: ${type}, slug: ${slug}`);

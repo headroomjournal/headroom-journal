@@ -93,7 +93,7 @@ async function getRelatedArticles(
   }
 }
 
-export const revalidate = false; // Rely on On-Demand Revalidation via Webhook
+export const revalidate = 86400; // 24h safety fallback, but primarily updated via On-Demand Revalidation
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;
