@@ -93,7 +93,7 @@ async function getRelatedArticles(
   }
 }
 
-export const revalidate = 21600; // Revalidate every 6 hours
+export const revalidate = false; // Rely on On-Demand Revalidation via Webhook
 
 export default async function ArticlePage({ params }: ArticlePageProps) {
   const { slug } = await params;

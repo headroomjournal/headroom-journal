@@ -31,7 +31,7 @@ async function getArticles(): Promise<SanityArticle[]> {
   }
 }
 
-export const revalidate = 3600; // Revalidate every 1 hour
+export const revalidate = false; // Disable time-based ISR, rely on On-Demand Revalidation
 
 export default async function Home() {
   const allArticles = await getArticles();
