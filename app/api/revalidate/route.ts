@@ -17,28 +17,38 @@ export async function POST(req: NextRequest) {
     }
 
     // 2. Propagation Delay: Give Sanity CDN time to update (2 seconds)
-    // This prevents Next.js from fetching old data during revalidation.
     await new Promise((resolve) => setTimeout(resolve, 2000));
 
     // 3. Identify the document type and slug
-    const { _type: type, slug } = body;
+    // On deletion, slug might be missing depending on your webhook projection
+    const type = body._type;
+    const slug = body.slug;
 
     console.log(`[Revalidate] Triggered for type: ${type}, slug: ${slug}`);
 
-    // 3. Logic based on document type
+    // 4. Logic based on document type
     if (type === "article") {
-      // Revalidate the homepage to show the new article in the list
+      // Revalidate homepage
       revalidatePath("/");
       
-      // Revalidate the specific article page
+      // Revalidate specific article page
       if (slug) {
         revalidatePath(`/article/${slug}`);
+      } else {
+        // If no slug, it's likely a deletion. 
+        // We do a secondary revalidation of the homepage after a longer delay 
+        // to ensure Sanity's search index has updated.
+        console.log("[Revalidate] Potential deletion detected, scheduling secondary homepage refresh...");
+        
+        // Note: In serverless environments, we can't easily background a task after response.
+        // We'll wait a bit longer for the first response if it's a deletion.
+        await new Promise((resolve) => setTimeout(resolve, 3000));
+        revalidatePath("/");
       }
 
       return NextResponse.json({ 
         revalidated: true, 
-        now: Date.now(),
-        message: `Revalidated homepage and article: ${slug}` 
+        message: `Revalidated homepage and paths. Slug: ${slug || 'none (deletion)'}` 
       });
     }
 
@@ -47,8 +57,7 @@ export async function POST(req: NextRequest) {
     
     return NextResponse.json({ 
       revalidated: true, 
-      now: Date.now(),
-      message: "Revalidated homepage" 
+      message: "Revalidated homepage fallback" 
     });
 
   } catch (err: any) {
