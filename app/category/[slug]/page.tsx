@@ -3,7 +3,7 @@ import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { ArticleCard } from "@/components/ArticleCard";
 import { client } from "@/sanity/lib/client";
-import { urlFor } from "@/sanity/lib/image";
+import { urlFor, safeUrlFor } from "@/sanity/lib/image";
 
 interface CategoryPageProps {
   params: Promise<{
@@ -81,7 +81,7 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
 
   const withImageUrl = (article: SanityArticle) => ({
     ...article,
-    imageUrl: article.imageUrl ? urlFor(article.imageUrl).url() : undefined,
+    imageUrl: safeUrlFor(article.imageUrl),
   });
 
   const formattedArticles = articles.map(withImageUrl);

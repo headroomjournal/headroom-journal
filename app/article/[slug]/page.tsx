@@ -7,7 +7,7 @@ import { Footer } from "@/components/Footer";
 import { ArticleCard } from "@/components/ArticleCard";
 import { SpotifyEmbed } from "@/components/SpotifyEmbed";
 import { client } from "@/sanity/lib/client";
-import { urlFor } from "@/sanity/lib/image";
+import { urlFor, safeUrlFor } from "@/sanity/lib/image";
 import { ARTICLE_QUERY, RELATED_ARTICLES_QUERY } from "@/sanity/lib/queries";
 import { portableTextComponents } from "@/components/PortableTextComponents";
 
@@ -19,9 +19,9 @@ export async function generateMetadata({
 
   if (!article) return { title: "Article Not Found" };
 
-  const articleImageUrl = article.imageUrl
+  const articleImageUrl = article.imageUrl?.asset
     ? urlFor(article.imageUrl).width(1200).height(630).url()
-    : null;
+    : "https://headroomjournal.com/logo.png";
 
   return {
     title: `${article.title} | Headroom Journal`,
@@ -105,9 +105,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
 
   const relatedArticles = await getRelatedArticles(article.category, slug);
 
-  const articleImageUrl = article.imageUrl
-    ? urlFor(article.imageUrl).url()
-    : null;
+  const articleImageUrl = safeUrlFor(article.imageUrl);
 
   return (
     <main className="min-h-screen bg-white">

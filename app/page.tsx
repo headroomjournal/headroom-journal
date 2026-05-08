@@ -2,7 +2,7 @@ import { ArticleCard } from "@/components/ArticleCard";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { client } from "@/sanity/lib/client";
-import { urlFor } from "@/sanity/lib/image";
+import { urlFor, safeUrlFor } from "@/sanity/lib/image";
 import { ARTICLES_QUERY } from "@/sanity/lib/queries";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -39,7 +39,7 @@ export default async function Home() {
   // Helper to transform Sanity image object to URL string
   const withImageUrl = (article: SanityArticle) => ({
     ...article,
-    imageUrl: article.imageUrl ? urlFor(article.imageUrl).url() : undefined,
+    imageUrl: safeUrlFor(article.imageUrl),
   });
 
   // Separate "Text Only" articles (those without images) from "Visual" articles
