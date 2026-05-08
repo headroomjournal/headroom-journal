@@ -36,15 +36,15 @@ export default defineType({
     }),
     defineField({
       name: "date",
-      title: "Publish Date & Time",
+      title: "Publish Date & Time (24h WIB)",
       type: "datetime",
       options: {
         dateFormat: "DD.MM.YY",
         timeFormat: "HH:mm",
-        timeStep: 15,
+        timeStep: 1,
       },
       validation: (rule) => rule.required(),
-      description: "Articles with a future date will be hidden from the website until that time."
+      description: "Format 24 Jam. Artikel di masa depan otomatis tersembunyi. Pastikan klik 'Publish' setelah mengubah tanggal."
     }),
     defineField({
       name: "readingTime",

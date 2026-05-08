@@ -14,3 +14,14 @@ export function slugify(text: string) {
     .replace(/^-+/, "")
     .replace(/-+$/, "");
 }
+export function formatDate(dateString: string) {
+  if (!dateString) return "";
+  const date = new Date(dateString);
+  
+  // Format to DD.MM.YY (as seen in the original design)
+  return new Intl.DateTimeFormat("en-GB", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "2-digit",
+  }).format(date).replace(/\//g, ".");
+}

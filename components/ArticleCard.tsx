@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 
 interface ArticleCardProps {
   title: string;
@@ -203,7 +203,7 @@ export function ArticleCard({
           <div className="mb-2 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-gray-500">
             <span className="text-blue-600">{category}</span>
             <span>
-              {date}
+              {formatDate(date)}
               {readingTime ? ` — ${readingTime} MIN READ` : ""}
             </span>
           </div>

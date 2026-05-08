@@ -44,7 +44,7 @@ async function getArticlesByCategory(
     // Fallback: capitalized slug (e.g. "culture" -> "Culture")
     category.charAt(0).toUpperCase() + category.slice(1);
 
-  const query = `*[_type == "article" && category == $cmsCategory && date <= now()] | order(date desc) {
+  const query = `*[_type == "article" && category == $cmsCategory && dateTime(date) <= dateTime(now())] | order(date desc) {
     title,
     category,
     date,

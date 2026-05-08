@@ -20,7 +20,7 @@ interface SanityArticle {
 }
 
 async function searchArticles(queryStr: string): Promise<SanityArticle[]> {
-  const query = `*[_type == "article" && date <= now() && (title match $text || excerpt match $text || content[].children[].text match $text)] | order(date desc) {
+  const query = `*[_type == "article" && dateTime(date) <= dateTime(now()) && (title match $text || excerpt match $text || content[].children[].text match $text)] | order(date desc) {
     title,
     category,
     date,

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { Metadata } from "next";
-import { cn } from "@/lib/utils";
+import { cn, formatDate } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import { Header } from "@/components/Header";
@@ -118,7 +118,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
           <div className="mb-6 flex items-center gap-4 text-xs font-bold uppercase tracking-widest text-gray-500">
             <span className="text-blue-600">{article.category}</span>
             <span>—</span>
-            <span>{article.date}</span>
+            <span>{formatDate(article.date)}</span>
             {article.readingTime && (
               <>
                 <span>—</span>
