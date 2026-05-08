@@ -38,7 +38,7 @@ export function ArticleCard({
             <div className="mb-3 flex items-center justify-between text-[10px] font-bold uppercase tracking-widest text-gray-500">
               <span className="text-blue-600">{category}</span>
               <span>
-                {date}
+                {formatDate(date)}
                 {readingTime ? ` — ${readingTime} MIN READ` : ""}
               </span>
             </div>
@@ -74,7 +74,7 @@ export function ArticleCard({
           <div className="flex flex-col justify-center">
             <div className="mb-1 flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest text-gray-400">
               <span className="text-blue-600">{category}</span>
-              <span>{date}</span>
+              <span>{formatDate(date)}</span>
             </div>
             <h3 className="font-sans text-sm font-bold leading-tight text-black transition-colors group-hover:text-gray-600 line-clamp-2">
               {title}

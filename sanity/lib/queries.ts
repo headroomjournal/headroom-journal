@@ -2,7 +2,7 @@ import { groq } from "next-sanity";
 
 // Homepage Query: Recent 100 articles, exclude 'content' to reduce payload
 // Added safety: only fetch articles where date is <= now (Future Publishing)
-export const ARTICLES_QUERY = groq`*[_type == "article" && dateTime(date) <= dateTime(now())] | order(date desc)[0...100] {
+export const ARTICLES_QUERY = groq`*[_type == "article" && (date <= now() || !defined(date))] | order(date desc)[0...100] {
   title,
   category,
   date,
@@ -16,7 +16,7 @@ export const ARTICLES_QUERY = groq`*[_type == "article" && dateTime(date) <= dat
 }`;
 
 // Article Detail Query: Fetch single article by slug, includes 'content'
-export const ARTICLE_QUERY = groq`*[_type == "article" && slug.current == $slug && dateTime(date) <= dateTime(now())][0] {
+export const ARTICLE_QUERY = groq`*[_type == "article" && slug.current == $slug && (date <= now() || !defined(date))][0] {
   title,
   category,
   date,
@@ -29,7 +29,7 @@ export const ARTICLE_QUERY = groq`*[_type == "article" && slug.current == $slug 
 }`;
 
 // Related Articles Query: Fetch 2 articles from same category, exclude current
-export const RELATED_ARTICLES_QUERY = groq`*[_type == "article" && category == $category && slug.current != $currentSlug && dateTime(date) <= dateTime(now())] | order(date desc) [0...2] {
+export const RELATED_ARTICLES_QUERY = groq`*[_type == "article" && category == $category && slug.current != $currentSlug && (date <= now() || !defined(date))] | order(date desc) [0...2] {
   title,
   category,
   date,
