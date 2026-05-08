@@ -36,12 +36,15 @@ export default defineType({
     }),
     defineField({
       name: "date",
-      title: "Date",
-      type: "date",
+      title: "Publish Date & Time",
+      type: "datetime",
       options: {
         dateFormat: "DD.MM.YY",
+        timeFormat: "HH:mm",
+        timeStep: 15,
       },
       validation: (rule) => rule.required(),
+      description: "Articles with a future date will be hidden from the website until that time."
     }),
     defineField({
       name: "readingTime",
