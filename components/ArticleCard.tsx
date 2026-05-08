@@ -164,7 +164,7 @@ export function ArticleCard({
       <div className="flex flex-col gap-4">
         {/* Image Container - Only render if imageUrl exists */}
         {imageUrl ? (
-          <div className="relative overflow-hidden bg-gray-100">
+          <div className="relative overflow-hidden bg-gray-50">
             <div
               className={cn(
                 "relative w-full transition-transform duration-500 group-hover:scale-105",
@@ -176,7 +176,12 @@ export function ArticleCard({
                 alt={title}
                 fill
                 priority={priority}
-                className="object-cover"
+                className={cn(
+                  "transition-all duration-500",
+                  imageUrl === "/logo.png" 
+                    ? "object-contain p-12 opacity-30 grayscale filter" // Small, centered, and subtle for fallback
+                    : "object-cover"
+                )}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>

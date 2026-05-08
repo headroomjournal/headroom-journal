@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Metadata } from "next";
+import { cn } from "@/lib/utils";
 import { notFound } from "next/navigation";
 import { PortableText } from "@portabletext/react";
 import { Header } from "@/components/Header";
@@ -141,7 +142,12 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                 src={articleImageUrl}
                 alt={article.title}
                 fill
-                className="object-cover"
+                className={cn(
+                  "transition-all duration-500",
+                  articleImageUrl === "/logo.png"
+                    ? "object-contain p-20 opacity-20 grayscale filter" // Very subtle for detail page hero
+                    : "object-cover"
+                )}
                 priority
               />
             </div>
